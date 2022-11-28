@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+  </head>
+  <body class="flex justify-center h-[100vh] items-center">
+    <div
+      class="text-xl text-black font-thin rounded-xl bg-white w-[50vw] h-fit-content shadow-xl"
+    >
+      <p class="w-full text-center text-5xl pt-4 uppercase">wörd scrämbler</p>
+      <div class="w-full p-4">
+        <textarea
+          id="input"
+          class="border-2 rounded-lg w-full h-[15vh] p-2"
+        ></textarea>
+      </div>
+      <p id="output" class="border-2 rounded-lg h-fit-content p-2 m-4">
+        Scrambled text will appear here ...
+      </p>
+      <div class="m-4 mt-8">
+        <button
+          onclick="copyToClipboard()"
+          class="border-2 rounded-lg p-2 w-full"
+        >
+          Copy to clipboard
+        </button>
+      </div>
+    </div>
+  </body>
+  <script>
+    let output = "";
+    function copyToClipboard() {
+      navigator.clipboard.writeText(output);
+      alert("Copied the text: " + output);
+    }
+
+    document.getElementById("input").addEventListener("input", (e) => {
+      let input = e.target.value;
+      //take first and last letter of every word of the string input and jumble the rest of the letters
+      let words = input.split(" ");
+      let scrambledWords = [];
+      words.forEach((word) => {
+        if (word !== undefined && word !== "") {
+          let firstLetter = word[0];
+          let lastLetter = word[word.length - 1];
+          let middleLetters = word.slice(1, word.length - 1);
+          let scrambledMiddleLetters = middleLetters
+            .split("")
+            .sort(() => Math.random() - 0.5)
+            .join("");
+          let scrambledWord = firstLetter + scrambledMiddleLetters + lastLetter;
+          scrambledWords.push(scrambledWord);
+        }
+      });
+      output = scrambledWords.join(" ");
+      document.getElementById("output").innerText = output;
+    });
+  </script>
+</html>
