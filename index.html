@@ -45,31 +45,42 @@
       let scrambledWords = [];
       words.forEach((word) => {
         if (word !== undefined && word !== "") {
-          let firstLetter = word[0];
-          let lastLetter = word[word.length - 1];
-          let specialChar = "";
-          if (
-            lastLetter === "." ||
-            lastLetter === "," ||
-            lastLetter === "!" ||
-            lastLetter === "?" ||
-            lastLetter === ";" ||
-            lastLetter === ":"
-          ) {
-            lastLetter = word[word.length - 2];
-            specialChar = word[word.length - 1];
+          if (word.length > 3) {
+            let firstLetter = word[0];
+            let lastLetter = word[word.length - 1];
+            if (
+              lastLetter !== "." &&
+              lastLetter !== "," &&
+              lastLetter !== "!" &&
+              lastLetter !== "?" &&
+              lastLetter !== ";"
+            ) {
+              let middleLetters = word.slice(1, word.length - 1);
+              let scrambledMiddleLetters = middleLetters
+                .split("")
+                .sort(() => Math.random() - 0.5)
+                .join("");
+              let scrambledWord =
+                firstLetter + scrambledMiddleLetters + lastLetter;
+              scrambledWords.push(scrambledWord);
+            } else {
+              let lastLetter = word[word.length - 2];
+              let specialLetter = word[word.length - 1];
+              let middleLetters = word.slice(1, word.length - 2);
+              let scrambledMiddleLetters = middleLetters
+                .split("")
+                .sort(() => Math.random() - 0.5)
+                .join("");
+              let scrambledWord =
+                firstLetter +
+                scrambledMiddleLetters +
+                lastLetter +
+                specialLetter;
+              scrambledWords.push(scrambledWord);
+            }
+          } else {
+            scrambledWords.push(word);
           }
-          let middleLetters = word.slice(1, word.length - 1);
-          let scrambledMiddleLetters = middleLetters
-            .split("")
-            .sort(() => Math.random() - 0.5)
-            .join("");
-          let scrambledWord = firstLetter + scrambledMiddleLetters + lastLetter;
-          if (specialChar !== "") {
-            scrambledWord += specialChar;
-            specialChar = "";
-          }
-          scrambledWords.push(scrambledWord);
         }
       });
       output = scrambledWords.join(" ");
